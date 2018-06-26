@@ -268,7 +268,9 @@ PlayerSettings:
     m_Devices:
     - Oculus
     - OpenVR
-  m_BuildTargetEnableVuforiaSettings: []
+  m_BuildTargetEnableVuforiaSettings:
+  - m_BuildTarget: Metro
+    m_Enabled: 0
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   m_TemplateCustomTags: {}
@@ -579,7 +581,7 @@ PlayerSettings:
   metroCertificatePassword: 
   metroCertificateSubject: Productive Edge
   metroCertificateIssuer: Productive Edge
-  metroCertificateNotAfter: 00bb6aec7528d501
+  metroCertificateNotAfter: 00f5010b6e2cd501
   metroApplicationDescription: Cohack
   wsaImages: {}
   metroTileShortName: 
