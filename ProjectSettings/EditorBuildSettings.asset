@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/_scenes/main.unity
-    guid: 0cb1a4df0cb3a9b42b972534aca16d08
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/_scenes/vumark.unity
-    guid: 0475a0ff4d87158428045201cfdd50ab=
+    guid: 0475a0ff4d87158428045201cfdd50ab
+  - enabled: 0
+    path: Assets/_scenes/test-charting.unity
+    guid: d45de60820449ff44951c73e0471c5eb
+  - enabled: 1
+    path: Assets/_scenes/main.unity
+    guid: 631907979d8a1a046b97e6374702fb9f

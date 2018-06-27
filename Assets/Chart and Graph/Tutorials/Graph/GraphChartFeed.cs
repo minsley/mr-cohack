@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using ChartAndGraph;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GraphChartFeed : MonoBehaviour
 {
@@ -7,89 +9,57 @@ public class GraphChartFeed : MonoBehaviour
 
     private GraphChartBase graph;
     private float timeSinceUpdate = 0f;
+    private int lastX = 0;
 
-	void Start ()
+	public void Start ()
     {
         Random.InitState(System.DateTime.Now.Millisecond);
 
         graph = GetComponent<GraphChartBase>();
         if (graph != null)
         {
-            //graph.DataSource.StartBatch();
-            graph.DataSource.ClearAndMakeBezierCurve("Player 1");
-            graph.DataSource.ClearAndMakeBezierCurve("Player 2");
-            for (int i = 0; i <30; i++)
+            var series = Enumerable.Range(0, 1000).Select(x => Random.Range(0f, 10f)).ToList();
+
+            graph.DataSource.StartBatch();
+            graph.DataSource.ClearAndMakeLinear("Player 1");
+            graph.DataSource.ClearAndMakeLinear("Player 2");
+
+            var y = GetBinAverage(series, 50);
+            for (int i=0; i<y.Count(); i++)
             {
-                if (i == 0) {
-                    graph.DataSource.SetCurveInitialPoint("Player 1",0f, Random.value * 10f + 10f);
-                    graph.DataSource.SetCurveInitialPoint("Player 2",0f, Random.value * 10f + 10f);
-                }
-                else {
-                    graph.DataSource.AddLinearCurveToCategory("Player 1", new DoubleVector2(i * 10f/30f, Random.value * 10f + 10f));
-                    graph.DataSource.AddLinearCurveToCategory("Player 2", new DoubleVector2(i * 10f/30f, Random.value * 10f + 10f));
-                }
+                graph.DataSource.AddPointToCategory("Player 1", i, y[i]);
+                lastX = i;
             }
 
-            graph.DataSource.MakeCurveCategorySmooth("Player 1");
-            graph.DataSource.MakeCurveCategorySmooth("Player 2");
-            //graph.DataSource.EndBatch();
+            graph.DataSource.EndBatch();
         }
     }
 
-    // void Update()
-    // {
-    //     if(graph == null)
-    //         return;
+    public void Update()
+    {
+        timeSinceUpdate += Time.deltaTime;
 
-    //     timeSinceUpdate += Time.deltaTime;
+        if (graph == null || timeSinceUpdate < UpdatePeriod)
+            return;
 
-    //     if(timeSinceUpdate >= UpdatePeriod)
-    //     {
-    //         timeSinceUpdate = 0f;
+        timeSinceUpdate = 0;
+        graph.DataSource.AddPointToCategory("Player 1", ++lastX, Random.Range(3,7));
+    }
 
-    //         graph.DataSource.AddPointToCategoryRealtime("Player 2",Random.value*10f,Random.value*10f + 20f, UpdatePeriod);
-    //         graph.DataSource.AddPointToCategoryRealtime("Player 1",Random.value*10f,Random.value*10f + 20f, UpdatePeriod);
-    //     }
-    // }
+    private List<float> GetBinAverage(List<float> source, int binSize)
+    {
+        var result = new List<float>();
 
-    // public GraphChartBase Graph;
-    // public int TotalPoints = 10;
-    // float lastTime = 0f;
-    // float lastX = 0f;
-    // void Start()
-    // {
-    //     if(Graph == null)
-    //     {
-    //         Graph = GetComponent<GraphChartBase>();
-    //     }
+        for (var i = 0; i < source.Count / binSize; i++)
+        {
+            var index = i * binSize;
+            var remainingCount = source.Count - (index + 1);
 
-    //     float x = 0f;
+            var subset = source.GetRange(index, binSize > remainingCount ? remainingCount : binSize);
 
-    //     Graph.DataSource.ClearCategory("Player 1");
-    //     Graph.DataSource.ClearCategory("Player 2");
+            result.Add(subset.Average());
+        }
 
-    //     for(int i=0; i < TotalPoints; i++)
-    //     {
-    //         Graph.DataSource.AddPointToCategory("Player 1", x, Random.value * 20f + 10f);
-    //         Graph.DataSource.AddPointToCategory("Player 2", x, Random.value * 10f);
-
-    //         x += Random.value *3f;
-    //         lastX = x;
-    //     }
-    // }
-
-    // void Update()
-    // {
-    //     float time = Time.time;
-    //     if(lastTime + 1f < time)
-    //     {
-    //         lastTime = time;
-    //         lastX += Random.value * 3f;
-    //         Graph.DataSource.AddPointToCategory("Player 1", lastX, Random.value * 20f + 10f);
-    //         Graph.DataSource.AddPointToCategory("Player 2", lastX, Random.value * 20f + 1f);
-
-    //         Graph.DataSource.MakeCurveCategorySmooth("Player 1");
-    //         Graph.DataSource.MakeCurveCategorySmooth("Player 2");
-    //     }
-    // }
+        return result;
+    }
 }
