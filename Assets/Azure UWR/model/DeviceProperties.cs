@@ -42,3 +42,40 @@ public class Reported
     public int version;
     public JObject Telemetry;
 }
+
+/*
+{
+    "id": "chiller-01.0;1530220828669",
+    "doc.schemaversion": 1,
+    "doc.schema": "d2cmessage",
+    "device.id": "chiller-01.0",
+    "device.msg.schema": "device-sensors;v1",
+    "data.schema": "StreamingJobs",
+    "device.msg.created": 1530220828669,
+    "device.msg.received": 1530220828669,
+    "data": {
+        "temperature": 74.4707,
+        "temperature_unit": "F",
+        "pressure": 138.276047,
+        "pressure_unit": "psig",
+        "speed": 0,
+        "speed_unit": null,
+        "vibration": 0,
+        "vibration_unit": null,
+        "humidity": 69.18799,
+        "humidity_unit": "%",
+        "fuelLevel": 0,
+        "fuelLevel_unit": null,
+        "coolant": 0,
+        "coolant_unit": null,
+        "latitude": 0,
+        "longitude": 0,
+        "partitionId": 0
+    },
+    "_rid": "-pgyAMk9wgDXDwQAAAAAAA==",
+    "_self": "dbs/-pgyAA==/colls/-pgyAMk9wgA=/docs/-pgyAMk9wgDXDwQAAAAAAA==/",
+    "_etag": "\"0100aa28-0000-0000-0000-5b3551290000\"",
+    "_attachments": "attachments/",
+    "_ts": 1530220841
+}
+//*/
